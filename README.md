@@ -1,5 +1,5 @@
 # my-react-ui
-endyui是个人制作的测试ui库
+my-react-ui是个人制作的测试ui库
 
 ![npm](https://img.shields.io/npm/v/my-react-ui)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/my-react-ui)
