@@ -14,5 +14,4 @@ export default {
   decorators: [withKnobs],
 };
 
-export const knobsBtn = () => (
-);
+export const knobsBtn = () => ({});
