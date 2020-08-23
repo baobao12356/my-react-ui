@@ -13,7 +13,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "tsc -p tsconfig.build.json",
+    "build-cjs": "microbundle build --tsconfig tsconfig.build.json --jsx React.createElement  --compress=false --format cjs",
+    "build-all": "microbundle build --tsconfig tsconfig.build.json --jsx React.createElement  --compress=false",
+    "build": "rm -rf ./dist && npm run build-all && npm run build-cjs",
     "test": "react-scripts test --coverage --watchAll=false",
     "test:watch": "react-scripts test",
     "eject": "react-scripts eject",
@@ -42,7 +44,8 @@
   "files": [
     "dist"
   ],
-  "module": "dist/index.js",
+  "main": "dist/my-react-ui.js",
+  "module": "dist/my-react-ui.modern.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "eslintConfig": {
@@ -85,6 +88,7 @@
     "babel-loader": "^8.1.0",
     "coveralls": "^3.1.0",
     "lint-staged": "^10.2.11",
+    "microbundle": "^0.12.3",
     "np": "^6.4.0",
     "patch-package": "^6.2.2",
     "plop": "^2.7.4",
