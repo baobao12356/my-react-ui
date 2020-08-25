@@ -1,6 +1,5 @@
 import React, { ReactNode, AnchorHTMLAttributes, ButtonHTMLAttributes, PropsWithChildren, useMemo } from "react";
-// import styled from "styled-components";
-import styled, { css } from 'styled-components'
+import styled from "styled-components";
 import { color, typography } from "../shared/styles";
 import { darken, rgba, opacify } from "polished";
 import { easing } from '../shared/animation'
@@ -47,11 +46,10 @@ export const SIZES: sizeObj = {
 export type SizesTypes = keyof typeof SIZES;
 
 export const btnPadding = {
-  small: '8px 16px',
-  medium: '13px 20px',
+    small: '8px 16px',
+    medium: '13px 20px',
 };
 
-// 编写button内部的span以及loading样式：
 const Text = styled.span`
   display: inline-block;
   vertical-align: top;
@@ -114,8 +112,8 @@ const StyledButton = styled.button<ButtonProps>`
   line-height: 1;
 
   ${(props) =>
-    !props.isLoading && css
-      `
+    !props.isLoading &&
+    `
       &:hover {
         transform: translate3d(0, -2px, 0);
         box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;
@@ -145,8 +143,8 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   ${(props) =>
-    props.disabled && css
-      `
+    props.disabled &&
+    `
       cursor: not-allowed !important;
       opacity: 0.5;
       &:hover {
@@ -155,8 +153,8 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${(props) =>
-    props.isUnclickable && css
-      `
+    props.isUnclickable &&
+    `
       cursor: default !important;
       pointer-events: none;
       &:hover {
@@ -165,8 +163,8 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${(props) =>
-    props.isLoading && css
-      `
+    props.isLoading &&
+    `
       cursor: progress !important;
       opacity: 0.7;
 
@@ -189,13 +187,13 @@ const StyledButton = styled.button<ButtonProps>`
 
 
   ${(props) =>
-    props.appearance === APPEARANCES.primary && css
-      `
+    props.appearance === APPEARANCES.primary &&
+    `
       background: ${color.primary};
       color: ${color.lightest};
 
       ${!props.isLoading &&
-      `
+    `
           &:hover {
             background: ${darken(0.05, color.primary)};
           }
@@ -212,13 +210,13 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${(props) =>
-    props.appearance === APPEARANCES.secondary && css
-      `
+    props.appearance === APPEARANCES.secondary &&
+    `
       background: ${color.secondary};
       color: ${color.lightest};
 
       ${!props.isLoading &&
-      `
+    `
           &:hover {
             background: ${darken(0.05, color.secondary)};
           }
@@ -235,13 +233,13 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${(props) =>
-    props.appearance === APPEARANCES.tertiary && css
-      `
+    props.appearance === APPEARANCES.tertiary &&
+    `
       background: ${color.tertiary};
       color: ${color.darkest};
 
       ${!props.isLoading &&
-      `
+    `
           &:hover {
             background: ${darken(0.05, color.tertiary)};
           }
@@ -258,14 +256,14 @@ const StyledButton = styled.button<ButtonProps>`
     `}
 
   ${(props) =>
-    props.appearance === APPEARANCES.outline && css
-      `
+    props.appearance === APPEARANCES.outline &&
+    `
       box-shadow: ${opacify(0.05, color.border)} 0 0 0 1px inset;
       color: ${color.dark};
       background: transparent;
 
-      ${!props.isLoading && css
-        `
+      ${!props.isLoading &&
+    `
           &:hover {
             box-shadow: ${opacify(0.3, color.border)} 0 0 0 1px inset;
           }
@@ -279,7 +277,7 @@ const StyledButton = styled.button<ButtonProps>`
           &:active:focus:hover {
             ${
         /* This prevents the semi-transparent border from appearing atop the background */ ""
-        }
+    }
             background: ${opacify(0.05, color.border)};
             box-shadow:  ${rgba(color.darkest, 0.15)} 0 1px 9px 2px;
           }
@@ -296,8 +294,8 @@ const StyledButton = styled.button<ButtonProps>`
     `};
 
     ${(props) =>
-    props.appearance === APPEARANCES.primaryOutline && css
-      `
+    props.appearance === APPEARANCES.primaryOutline &&
+    `
         box-shadow: ${color.primary} 0 0 0 1px inset;
         color: ${color.primary};
 
@@ -313,21 +311,21 @@ const StyledButton = styled.button<ButtonProps>`
         }
         &:focus {
           box-shadow: ${color.primary} 0 0 0 1px inset, ${rgba(
-        color.primary,
-        0.4
-      )} 0 1px 9px 2px;
+      color.primary,
+      0.4
+    )} 0 1px 9px 2px;
         }
         &:focus:hover {
           box-shadow: ${color.primary} 0 0 0 1px inset, ${rgba(
-        color.primary,
-        0.2
-      )} 0 8px 18px 0px;
+      color.primary,
+      0.2
+    )} 0 8px 18px 0px;
         }
       `};
 
     ${(props) =>
-    props.appearance === APPEARANCES.secondaryOutline && css
-      `
+    props.appearance === APPEARANCES.secondaryOutline &&
+    `
         box-shadow: ${color.secondary} 0 0 0 1px inset;
         color: ${color.secondary};
 
@@ -352,13 +350,13 @@ const StyledButton = styled.button<ButtonProps>`
       `};
 
       ${(props) =>
-    props.appearance === APPEARANCES.inversePrimary && css
-      `
+    props.appearance === APPEARANCES.inversePrimary &&
+    `
           background: ${color.lightest};
           color: ${color.primary};
 
           ${!props.isLoading &&
-      `
+    `
               &:hover {
                 background: ${color.lightest};
               }
@@ -375,13 +373,13 @@ const StyledButton = styled.button<ButtonProps>`
       `}
 
       ${(props) =>
-    props.appearance === APPEARANCES.inverseSecondary && css
-      `
+    props.appearance === APPEARANCES.inverseSecondary &&
+    `
           background: ${color.lightest};
           color: ${color.secondary};
 
           ${!props.isLoading &&
-      `
+    `
               &:hover {
                 background: ${color.lightest};
               }
@@ -425,7 +423,6 @@ const StyledButton = styled.button<ButtonProps>`
 
 `;
 
-// 使用组件对其渲染：
 function Button(props: PropsWithChildren<ButtonProps>) {
   const { isLoading, loadingText, isLink, children } = props;
   const buttonInner = (
@@ -440,7 +437,6 @@ function Button(props: PropsWithChildren<ButtonProps>) {
     }
   }, [isLink]);
 
-  // as 是StyledButton的类型切换
   return (
     <StyledButton as={btnType} {...props}>
       {buttonInner}
