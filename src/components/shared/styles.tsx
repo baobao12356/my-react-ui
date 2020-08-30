@@ -5,7 +5,7 @@
 // shared下新建style.tsx:
 
 
-// import { css } from "styled-components";
+import { css } from "styled-components";
 
 export const color = {
   // Palette
@@ -38,7 +38,6 @@ export const color = {
   negative: "#FF4400",
   warning: "#E69D00",
 };
-
 // 除了上述颜色，背景色与一般颜色也不太一样，可以单独做个token：
 export const background = {
   app: "#F6F9FC",
@@ -91,3 +90,8 @@ export const spacing = {
 };
 export const breakpoint = 600;
 export const pageMargin = 5;
+
+export const messageBoxShadow = css`
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+`;

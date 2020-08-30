@@ -6,7 +6,8 @@
 
 
 import React from "react";
-import Button, {
+import {
+  Button,
   APPEARANCES,
   AppearancesTypes,
   SIZES,
@@ -27,22 +28,22 @@ export default {
 };
 
 export const knobsBtn = () => (
-    <Button
-      size={select<SizesTypes>("size", SIZES, SIZES.medium)}
-      href={text("hrefText", "")}
-      isLink={boolean("isLink", false)}
-      loadingText={text("loadingTEXT", "I AM LOADING")}
-      isLoading={boolean("isLoading", false)}
-      disabled={boolean("disabled", false)}
-      appearance={select<AppearancesTypes>(
-        "APPEARANCES",
-        APPEARANCES,
-        APPEARANCES.primary
-      )}
-      isUnclickable={boolean("isUnclickable", false)}
-    >
-      {text("childrenText", "Hello Storybook")}
-    </Button>
+  <Button
+    size={select<SizesTypes>("size", SIZES, SIZES.medium)}
+    href={text("hrefText", "")}
+    isLink={boolean("isLink", false)}
+    loadingText={text("loadingTEXT", "I AM LOADING")}
+    isLoading={boolean("isLoading", false)}
+    disabled={boolean("disabled", false)}
+    appearance={select<AppearancesTypes>(
+      "APPEARANCES",
+      APPEARANCES,
+      APPEARANCES.primary
+    )}
+    isUnclickable={boolean("isUnclickable", false)}
+  >
+    {text("childrenText", "Hello Storybook")}
+  </Button>
 );
 
 // 打开storybook，canvas里可以进行各种调校即成功。
