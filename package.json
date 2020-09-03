@@ -1,6 +1,6 @@
 {
   "name": "@baobao12356/my-react-ui",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": false,
   "scripts": {
     "start": "react-scripts start",
