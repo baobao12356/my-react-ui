@@ -153,8 +153,8 @@ describe("test Message component", () => {
         container
       );
     });
-    await act(async () => {
     const btn = container.querySelector("#btn");
+    await act(async () => {
       fireEvent.click(btn!);
       await sleep(2100);
     });
