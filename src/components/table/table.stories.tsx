@@ -1,13 +1,10 @@
+  
 import React from "react";
 import { Table, SourceDataType } from "./index";
-import { Icon } from "../icon";
 import {
   withKnobs,
-  text,
+  boolean,
   number,
-  color,
-  select,
-  boolean
 } from "@storybook/addon-knobs";
 
 export default {
@@ -15,7 +12,6 @@ export default {
   component: Table,
   decorators: [withKnobs],
 };
-
 
 const columns = [
   {
@@ -46,6 +42,7 @@ const columns = [
     },
   },
 ];
+
 const data = [
   {
     key: "1",

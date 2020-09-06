@@ -1,58 +1,12 @@
 import React, {
-  PropsWithChildren,
   ReactNode,
   useMemo,
-  useEffect,
   useState,
 } from "react";
-import ReactDom, {
-  unmountComponentAtNode
-} from 'react-dom';
-import styled, { keyframes, css } from "styled-components";
-import { color, typography, messageBoxShadow } from "../shared/styles";
-import { Pagination } from '../pagination';
-import { Icon } from "../icon";
-
-export type TableProps = {
-  /** 表内数据部分 */
-  data: SourceDataType[];
-  /** 表头部分*/
-  columns: ColumnType[];
-  /** 是否开启排序 */
-  sorted?: boolean;
-  /** 是否开启页码 */
-  pagination?: boolean;
-  /** 开启页码时才有效，设置每页显示几个*/
-  pageSize?: number;
-}
-
-
-const TableHeadSpan = styled.span`
-	display: inline-block;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding: 16px;
-	cursor: pointer;
-	& svg {
-		height: 10px;
-		width: 10px;
-	}
-`;
-export interface SourceDataType {
-  key: string;
-  [key: string]: any;
-}
-export interface ColumnType {
-  title: ReactNode;
-  /** 排序等操作用来代替这列的 */
-  dataIndex: string;
-  sorter?: {
-    compare: (a: SourceDataType, b: SourceDataType) => number;
-  };
-  render?: (v: any, value: SourceDataType, rowData: ColumnType) => ReactNode;
-}
-
+import styled from "styled-components";
+import { color } from "../shared/styles";
+import { Pagination } from "../pagination";
+import { Icon } from "../icon"
 
 const TableTable = styled.table`
 	width: 100%;
@@ -102,6 +56,34 @@ const TableTable = styled.table`
 	}
 `;
 
+const TableHeadSpan = styled.span`
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 16px;
+	cursor: pointer;
+	& svg {
+		height: 10px;
+		width: 10px;
+	}
+`;
+
+export interface SourceDataType {
+  key: string;
+  [key: string]: any;
+}
+
+export interface ColumnType {
+  title: ReactNode;
+  /** 排序等操作用来代替这列的 */
+  dataIndex: string;
+  sorter?: {
+    compare: (a: SourceDataType, b: SourceDataType) => number;
+  };
+  render?: (v: any, value: SourceDataType, rowData: ColumnType) => ReactNode;
+}
+
 const MapData = (data: SourceDataType[], columnData: ColumnType[]) => {
   return data.map((v) => {
     return (
@@ -122,18 +104,27 @@ const MapData = (data: SourceDataType[], columnData: ColumnType[]) => {
   });
 };
 
+export type TableProps = {
+  /** 表内数据部分 */
+  data: SourceDataType[];
+  /** 表头部分*/
+  columns: ColumnType[];
+  /** 是否开启排序 */
+  sorted?: boolean;
+  /** 是否开启页码 */
+  pagination?: boolean;
+  /** 开启页码时才有效，设置每页显示几个*/
+  pageSize?: number;
+}
 
 export function Table(props: TableProps) {
   const { data, columns, pageSize, pagination, sorted } = props;
   const [columnData, setColumnData] = useState<ColumnType[]>([]);
   const [sourceData, setSourceData] = useState<SourceDataType[]>([]);
-  const [paginationData, setPaginationData] = useState<SourceDataType[][]>(
-    []
-  );
-  const [current, setCurrent] = useState(0); //这个是paginationData的索引
+  const [paginationData, setPaginationData] = useState<SourceDataType[][]>([]);
   const [sortedData, setSortedData] = useState<SourceDataType[]>([]);
   const [filterState, setFilterState] = useState<number[]>([]);//记录第几列开启筛选
-
+  const [current, setCurrent] = useState(0); //这个是paginationData的索引
   const originPagination = useMemo(() => {
     return (data: SourceDataType[]) => {
       let tmp: SourceDataType[][] = [];
@@ -156,7 +147,6 @@ export function Table(props: TableProps) {
     setFilterState(new Array(columns.length).fill(0));//初始化排序数据
     return columns.length;
   }, [columns]);
-
 
   const totalLen = useMemo(() => {
     //内容部分总长
@@ -185,8 +175,6 @@ export function Table(props: TableProps) {
     return render;
   }, [columnData, current, pagination, paginationData, sortedData, sourceData]);
 
-
-
   return (
     <div>
       <TableTable>
@@ -196,79 +184,80 @@ export function Table(props: TableProps) {
               return (
                 <th key={i}>
                   <span>{v.title}</span>
-                  {v.sorter && sorted && v.sorter.compare && (
-                    <TableHeadSpan
-                      onClick={() => {
-                        if (filterState[i]) {
-                          //如果已经开启了排序
-                          //查看是不是1，如果为1，进行逆序排序，否则清空
-                          if (filterState[i] === 1) {
+                  {
+                    v.sorter && sorted && v.sorter.compare && (
+                      <TableHeadSpan
+                        onClick={() => {
+                          if (filterState[i]) {
+                            //如果已经开启了排序
+                            //查看是不是1，如果为1，进行逆序排序，否则清空
+                            if (filterState[i] === 1) {
+                              let res = sourceData
+                                .slice()
+                                .sort(
+                                  (a, b) =>
+                                    -v.sorter!.compare(
+                                      a,
+                                      b
+                                    )
+                                ); //数据传给compare
+                              let newfilter = new Array(
+                                totalColumn
+                              ).fill(0);
+                              newfilter[i] = 2;
+                              setSortedData(res);
+                              setFilterState(
+                                newfilter
+                              );
+                            } else {
+                              setSortedData([]); //清空排序数据
+                              if (pagination) {
+                                originPagination(
+                                  data
+                                );
+                              }
+                              filterState[i] = 0;
+                              setFilterState([
+                                ...filterState,
+                              ]);
+                            }
+                          } else {
+                            //没有开启就开启排序
                             let res = sourceData
                               .slice()
                               .sort(
-                                (a, b) =>
-                                  -v.sorter!.compare(
-                                    a,
-                                    b
-                                  )
+                                v.sorter!.compare
                               ); //数据传给compare
                             let newfilter = new Array(
                               totalColumn
                             ).fill(0);
-                            newfilter[i] = 2;
+                            newfilter[i] = 1;
                             setSortedData(res);
-                            setFilterState(
-                              newfilter
-                            );
-                          } else {
-                            setSortedData([]); //清空排序数据
-                            if (pagination) {
-                              originPagination(
-                                data
-                              );
-                            }
-                            filterState[i] = 0;
-                            setFilterState([
-                              ...filterState,
-                            ]);
+                            setFilterState(newfilter);
                           }
-                        } else {
-                          //没有开启就开启排序
-                          let res = sourceData
-                            .slice()
-                            .sort(
-                              v.sorter!.compare
-                            ); //数据传给compare
-                          let newfilter = new Array(
-                            totalColumn
-                          ).fill(0);
-                          newfilter[i] = 1;
-                          setSortedData(res);
-                          setFilterState(newfilter);
-                        }
-                      }}
-                    >
-                      <Icon
-                        icon="arrowup"
-                        block
-                        color={
-                          filterState[i] === 1
-                            ? color.primary
-                            : color.dark
-                        }
-                      ></Icon>
-
-                      <Icon
-                        icon="arrowdown"
-                        block
-                        color={
-                          filterState[i] === 2
-                            ? color.primary
-                            : color.dark
-                        }
-                      ></Icon>
-                    </TableHeadSpan>
-                  )}
+                        }}
+                      >
+                        <Icon
+                          icon="arrowup"
+                          block
+                          color={
+                            filterState[i] === 1
+                              ? color.primary
+                              : color.dark
+                          }
+                        ></Icon>
+                        <Icon
+                          icon="arrowdown"
+                          block
+                          color={
+                            filterState[i] === 2
+                              ? color.primary
+                              : color.dark
+                          }
+                        ></Icon>
+                      </TableHeadSpan>
+                    )
+                  }
                 </th>
               );
             })}
@@ -276,15 +265,17 @@ export function Table(props: TableProps) {
         </thead>
         <tbody>{renderData}</tbody>
       </TableTable>
-      {pagination && (
-        <Pagination
-          style={{ justifyContent: "flex-end" }}
-          total={totalLen}
-          pageSize={pageSize}
-          callback={(v) => setCurrent(v - 1)}
-          defaultCurrent={1}
-        ></Pagination>
-      )}
+      {
+        pagination && (
+          <Pagination
+            style={{ justifyContent: "flex-end" }}
+            total={totalLen}
+            pageSize={pageSize}
+            callback={(v) => setCurrent(v - 1)}
+            defaultCurrent={1}
+          ></Pagination>
+        )
+      }
     </div>
   );
 }

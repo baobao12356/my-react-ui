@@ -1,8 +1,7 @@
 import React from "react";
-import { fireEvent, act, render } from "@testing-library/react";
-import { Table } from "../index";
+import { render, fireEvent, cleanup } from "@testing-library/react";
+import { Table, SourceDataType } from "../index";
 import { color, typography } from "../../shared/styles";
-
 
 const columns = [
   {
@@ -33,6 +32,7 @@ const columns = [
     },
   },
 ];
+
 const data = [
   {
     key: "1",
@@ -63,12 +63,13 @@ const data = [
     english: 89,
   },
 ];
+
 describe("test Table component", () => {
   it('render correctly', () => {
     const wrapper = render(
       <Table
-        data={data}
         columns={columns}
+        data={data}
       />
     );
     expect(wrapper).toMatchSnapshot();
